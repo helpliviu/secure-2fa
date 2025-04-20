@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :clients
 
   namespace :rui do
     get "about", to: "pages#about"
