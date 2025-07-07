@@ -12,7 +12,6 @@ gem "jbuilder"
 # gem "bcrypt", "~> 3.1.7"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
-gem "solid_cache"
 gem "bootsnap", require: false
 
 gem "kamal", require: false
