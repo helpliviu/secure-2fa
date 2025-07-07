@@ -1,0 +1,37 @@
+<% content_for :body_classes, "text-slate-800 dark:bg-slate-900 dark:text-slate-100 bg-white" %>
+
+<div class="container mx-auto pb-24 px-4 my-16">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="mb-2 md:h2 h3">Account</h1>
+    <div class="prose-lg prose-slate dark:prose-invert mb-16">
+      <p>Take control of your account.</p>
+    </div>
+
+    <%= form_tag("#", method: "post") do %>
+      <h3 class="h6 mb-6">Credentials</h3>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-10 gap-6 items-center">
+        <div>
+          <%= label_tag :email, "Email", class: "form-label" %>
+          <%= email_field_tag :email, nil, placeholder: "email@example.com", class: "form-input" %>
+        </div>
+        <div>
+          <%= label_tag :password, "Password", class: "form-label" %>
+          <%= password_field_tag :password, nil, class: "form-input" %>
+        </div>
+        <div>
+          <%= label_tag :password_confirmation, "Password confirmation", class: "form-label" %>
+          <%= password_field_tag :password_confirmation, nil, class: "form-input" %>
+        </div>
+        <div>
+          <%= label_tag :current_password, "Current password", class: "form-label" %>
+          <%= password_field_tag :current_password, nil, class: "form-input" %>
+        </div>
+      </div>
+
+      <div class="border-t py-6 mt-10 flex items-center gap-4 dark:border-slate-600">
+        <%= submit_tag "Update", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

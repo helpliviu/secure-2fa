@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-ruby '3.3.5'
+ruby "3.3.5"
 
 gem "rails", "~> 8.0.2"
 gem "propshaft"
@@ -33,22 +33,22 @@ group :development do
   gem "web-console"
 end
 
-gem 'rexml'
-gem 'devise' # Authentication system
-gem 'devise-two-factor' # Devise addon for TOTP authenticator
-gem 'rqrcode' # QR code generator needed to link authenticator applications
-gem 'sidekiq' # Background jobs processing
-gem 'redis'
-gem 'dotenv-rails' # Storing environment variables
-gem 'phonelib' # Google’s library to validate phone formats
+gem "rexml"
+gem "devise" # Authentication system
+gem "devise-two-factor" # Devise addon for TOTP authenticator
+gem "rqrcode" # QR code generator needed to link authenticator applications
+gem "sidekiq" # Background jobs processing
+gem "redis"
+gem "dotenv-rails" # Storing environment variables
+gem "phonelib" # Google’s library to validate phone formats
 # gems for email/sms delivery services
-gem 'twilio-ruby'
-gem 'mailjet'
-gem 'plivo'
-gem 'sendgrid-ruby'
+gem "twilio-ruby"
+gem "mailjet"
+gem "plivo"
+gem "sendgrid-ruby"
 
-gem 'pry'
-gem 'pry-rails'
+gem "pry"
+gem "pry-rails"
 
 gem "cssbundling-rails", "~> 1.4"
 

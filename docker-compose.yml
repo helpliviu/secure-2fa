@@ -12,5 +12,5 @@ services:
       MYSQL_ROOT_PASSWORD: pass123
       MYSQL_DATABASE: secure_2fa_development
     ports:
-      - "33060:3306"
+      - "33062:3306"
 

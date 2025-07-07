@@ -1,26 +1,25 @@
 Rails.application.routes.draw do
-  resources :templates
-  resources :channels
-  resources :projects
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  # resources :templates
+  # resources :channels
+  # resources :projects
   devise_for :clients, controllers: {
     registrations: "clients/registrations",
-    confirmations: "clients/confirmations",
+  #   confirmations: "clients/confirmations",
     sessions: "clients/sessions"
   }
 
-  devise_scope :client do
-    get "clients/password/setup", to: "clients/
-passwords#edit", as: :edit_client_password
-    patch "clients/password/setup", to: "clients/passwords#update"
-    get "setup_2fa", to: "clients/two_factor_auths#new"
-    post "verify_otp", to: "clients/two_factor_auths#verify"
-    get "generate_backup_codes", to: "clients/two_factor_auths#generate_backup_codes"
-    get "verify_otp_login", to: "clients/sessions#verify_otp"
-    post "verify_otp_login", to: "clients/sessions#confirm_otp"
-  end
+  # devise_scope :client do
+  #   get "clients/password/setup", to: "clients/passwords#edit", as: :edit_client_password
+  #   patch "clients/password/setup", to: "clients/passwords#update"
+  #   get "setup_2fa", to: "clients/two_factor_auths#new"
+  #   post "verify_otp", to: "clients/two_factor_auths#verify"
+  #   get "generate_backup_codes", to: "clients/two_factor_auths#generate_backup_codes"
+  # end
 
-  require "sidekiq/web"
-  mount Sidekiq::Web => "/sidekiq"
+  # require "sidekiq/web"
+  # mount Sidekiq::Web => "/sidekiq"
 
   if Rails.env.development?
     mount Railsui::Engine, at: "/railsui"
@@ -44,9 +43,7 @@ passwords#edit", as: :edit_client_password
       get "team", to: "pages#team"
       get "integrations", to: "pages#integrations"
     end
-
-    root action: :index, controller: "railsui/default"
   end
 
-  get "up" => "rails/health#show", as: :rails_health_check
+  root action: :index, controller: "clients/welcome"
 end
