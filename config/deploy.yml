@@ -51,7 +51,7 @@ env:
   clear:
     SOLID_QUEUE_IN_PUMA: true
     REDIS_URL: redis://91.99.166.72:6379/0
-    DATABASE_URL: mysql2://root:${MYSQL_ROOT_PASSWORD}@91.99.166.72:3306/secure_2fa_production
+    DATABASE_URL: mysql2://secure_2fa :${MYSQL_ROOT_PASSWORD}@91.99.166.72:3306/secure_2fa_production
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
