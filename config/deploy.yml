@@ -43,7 +43,7 @@ accessories:
         MYSQL_PASSWORD: ${SECURE_2FA_DATABASE_PASSWORD}
     volumes:
       - /var/lib/mysql:/var/lib/mysql
-    cmd: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    cmd: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --bind-address=0.0.0.0
 
 env:
   secret:
