@@ -20,11 +20,36 @@ registry:
   password:
     - DOCKER_PASSWORD
 
+accessories:
+  redis:
+    image: redis:7-alpine
+    host: 91.99.166.72
+    port: 6379
+    volumes:
+      - /var/lib/redis:/data
+    cmd: redis-server --appendonly yes
+
+  mysql:
+    image: mysql:8.0
+    host: 91.99.166.72
+    port: 3306
+    env:
+      secret:
+        - MYSQL_ROOT_PASSWORD
+      clear:
+        MYSQL_DATABASE: secure_2fa_production
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    cmd: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
 env:
   secret:
     - RAILS_MASTER_KEY
+    - MYSQL_ROOT_PASSWORD
   clear:
     SOLID_QUEUE_IN_PUMA: true
+    REDIS_URL: redis://91.99.166.72:6379/0
+    DATABASE_URL: mysql2://root:MYSQL_ROOT_PASSWORD@91.99.166.72:3306/secure_2fa_production
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
