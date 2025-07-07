@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # resources :projects
   devise_for :clients, controllers: {
     registrations: "clients/registrations",
-  #   confirmations: "clients/confirmations",
+    #   confirmations: "clients/confirmations",
     sessions: "clients/sessions"
   }
 
