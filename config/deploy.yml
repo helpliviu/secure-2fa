@@ -1,5 +1,5 @@
 service: secure_2fa
-image: liviu/secure_2fa
+image: techwizardro/secure_2fa
 
 ssh:
   user: root
