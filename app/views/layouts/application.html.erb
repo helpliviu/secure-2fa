@@ -1,26 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>
-      Secure 2FA - Two Factor Authentication
-    </title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Secure 2FA - Two Factor Authentication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= yield :head %>
+  <%= yield :head %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  <%= stylesheet_link_tag "app", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "https://cdn.simplecss.org/simple.css" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body>
 
-    <%= railsui_head %>
-  </head>
+<%= yield %>
 
-  <body class="<%= railsui_body_classes %>">
-    <%= render "rui/shared/flash" %>
-    <%= yield %>
-    <%= railsui_launcher if Rails.env.development? %>
-  </body>
-</html
+</body>
+</html>
