@@ -205,7 +205,7 @@ GEM
     parser (3.3.8.0)
       ast (~> 2.4.1)
       racc
-    phonelib (0.10.7)
+    phonelib (0.10.10)
     plivo (4.61.4)
       faraday (~> 2.7)
       htmlentities
