@@ -2,21 +2,36 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   collation: utf8mb4_bin
+
+development:
+  <<: *default
   host: <%= ENV['MYSQL_HOST'] %>
   port: <%= ENV['MYSQL_PORT'] %>
   username: <%= ENV['MYSQL_USERNAME'] %>
   password: <%= ENV['MYSQL_PASSWORD'] %>
-
-development:
-  <<: *default
   database: secure_2fa_development
 
 test:
   <<: *default
+  host: <%= ENV['MYSQL_HOST'] %>
+  port: <%= ENV['MYSQL_PORT'] %>
+  username: <%= ENV['MYSQL_USERNAME'] %>
+  password: <%= ENV['MYSQL_PASSWORD'] %>
   database: secure_2fa_test
 
 production:
-  adapter: mysql2
-  encoding: utf8mb4
-  collation: utf8mb4_bin
-  url: <%= ENV["DATABASE_URL"] %>
+  primary: &primary_production
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+  cache:
+    <<: *default
+    url: <%= ENV["DATABASE_CACHE_URL"] %>
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    url: <%= ENV["DATABASE_QUEUE_URL"] %>
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    url: <%= ENV["DATABASE_CABLE_URL"] %>
+    migrations_paths: db/cable_migrate

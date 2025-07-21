@@ -1,4 +1,0 @@
-concurency: 5
-queues:
-  - default
-  - mailers

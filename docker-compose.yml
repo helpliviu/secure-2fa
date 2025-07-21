@@ -1,9 +1,4 @@
 services:
-  redis:
-    image: "redis:7-alpine"
-    ports:
-      - "63790:6379"
-
   mysql-dev:
     image: mysql:8.0
     restart: always
@@ -13,4 +8,3 @@ services:
       MYSQL_DATABASE: secure_2fa_development
     ports:
       - "33062:3306"
-

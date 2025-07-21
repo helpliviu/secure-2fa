@@ -21,14 +21,6 @@ registry:
     - DOCKER_PASSWORD
 
 accessories:
-  redis:
-    image: redis:7-alpine
-    host: 91.99.166.72
-    port: 6379
-    volumes:
-      - /var/lib/redis:/data
-    cmd: redis-server --appendonly yes
-
   mysql:
     image: mysql:8.0
     host: 91.99.166.72
@@ -44,6 +36,8 @@ accessories:
     volumes:
       - /var/lib/mysql:/var/lib/mysql
     cmd: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --bind-address=0.0.0.0
+    files:
+      - config/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 env:
   secret:
@@ -51,8 +45,9 @@ env:
     - MYSQL_ROOT_PASSWORD
     - SECURE_2FA_DATABASE_PASSWORD
     - DATABASE_URL
-  clear:
-    REDIS_URL: redis://91.99.166.72:6379/0
+    - DATABASE_CACHE_URL
+    - DATABASE_QUEUE_URL
+    - DATABASE_CABLE_URL
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
