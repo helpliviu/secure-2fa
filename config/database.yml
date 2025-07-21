@@ -20,7 +20,7 @@ test:
   database: secure_2fa_test
 
 production:
-  primary: &primary_production
+  primary:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
   cache:

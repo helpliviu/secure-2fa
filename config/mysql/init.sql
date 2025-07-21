@@ -1,12 +1,21 @@
--- Create additional databases for your Rails app
+-- Create the missing databases if they don't exist
 CREATE DATABASE IF NOT EXISTS secure_2fa_cache_production;
 CREATE DATABASE IF NOT EXISTS secure_2fa_queue_production;
 CREATE DATABASE IF NOT EXISTS secure_2fa_cable_production;
 
--- Grant privileges to the secure_2fa user for all databases
+-- Check current user privileges
+SHOW GRANTS FOR 'secure_2fa'@'%';
+
+-- Grant all privileges on the new databases
 GRANT ALL PRIVILEGES ON secure_2fa_cache_production.* TO 'secure_2fa'@'%';
 GRANT ALL PRIVILEGES ON secure_2fa_queue_production.* TO 'secure_2fa'@'%';
 GRANT ALL PRIVILEGES ON secure_2fa_cable_production.* TO 'secure_2fa'@'%';
 
--- Flush privileges to ensure they take effect
+-- Make sure the main database is also accessible
+GRANT ALL PRIVILEGES ON secure_2fa_production.* TO 'secure_2fa'@'%';
+
+-- Apply the changes
 FLUSH PRIVILEGES;
+
+-- Verify the grants were applied
+SHOW GRANTS FOR 'secure_2fa'@'%';
