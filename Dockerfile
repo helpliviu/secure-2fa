@@ -31,9 +31,6 @@ FROM base AS build
 # Install packages needed to build gems AND Node.js + Yarn for jsbundling-rails
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git libyaml-dev pkg-config && \
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install --no-install-recommends -y nodejs && \
-    npm install -g yarn && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
@@ -41,10 +38,6 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
-
-# Copy package.json files and install dependencies with Yarn
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production
 
 # Copy application code
 COPY . .
@@ -54,6 +47,9 @@ RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+
+
+
 
 # Final stage for app image
 FROM base
