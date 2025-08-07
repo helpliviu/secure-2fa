@@ -73,7 +73,7 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
     ast (2.4.3)
-    base64 (0.2.0)
+    base64 (0.3.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.0)
@@ -113,11 +113,11 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
-    faraday (2.13.0)
+    faraday (2.13.4)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-net_http (3.4.0)
+    faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     ffi (1.17.2-x86_64-linux-gnu)
     fugit (1.11.1)
@@ -143,8 +143,8 @@ GEM
     jbuilder (2.13.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    json (2.10.2)
-    jwt (2.10.1)
+    json (2.13.2)
+    jwt (2.10.2)
       base64
     kamal (2.5.3)
       activesupport (>= 7.0)
@@ -206,7 +206,7 @@ GEM
       ast (~> 2.4.1)
       racc
     phonelib (0.10.7)
-    plivo (4.61.4)
+    plivo (4.62.1)
       faraday (~> 2.7)
       htmlentities
       jwt
