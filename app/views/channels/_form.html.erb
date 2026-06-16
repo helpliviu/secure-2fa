@@ -1,27 +1,31 @@
-<%= form_with(model: channel) do |form| %>
+<%= form_with model: channel do |f| %>
   <% if channel.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(channel.errors.count, "error") %> prohibited this channel from being saved:</h2>
-
-      <ul>
-        <% channel.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="alert alert-danger">
+      <ul class="mb-0"><% channel.errors.full_messages.each do |m| %><li><%= m %></li><% end %></ul>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :client_id, style: "display: block" %>
-    <%= form.text_field :client_id %>
+  <div class="mb-3">
+    <%= f.label :title, class: "form-label fw-semibold" %>
+    <%= f.text_field :title, class: "form-control", placeholder: "Postmark Production" %>
   </div>
-
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <%= f.label :method, "Delivery Method", class: "form-label fw-semibold" %>
+      <%= f.select :method, Channel.delivery_methods.map { |m| [m.capitalize, m] },
+            { prompt: "Select method…" }, { class: "form-select" } %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :provider, class: "form-label fw-semibold" %>
+      <%= f.select :provider, Channel.providers.map { |p| [p[:name], p[:handle]] },
+            { prompt: "Select provider…" }, { class: "form-select" } %>
+    </div>
   </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="mb-4">
+    <%= f.label :credentials, "Credentials (JSON)", class: "form-label fw-semibold" %>
+    <%= f.text_area :credentials, class: "form-control font-monospace", rows: 5,
+          placeholder: '{"api_key": "...", "from_email": "noreply@yoursite.com"}' %>
+    <div class="form-text">Enter your provider credentials as a JSON object. This value is encrypted at rest.</div>
   </div>
+  <%= f.submit channel.new_record? ? "Create Channel" : "Update Channel", class: "btn btn-primary px-4" %>
+  <%= link_to "Cancel", channels_path, class: "btn btn-light ms-2" %>
 <% end %>

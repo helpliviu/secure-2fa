@@ -1,0 +1,36 @@
+<% content_for :title, "Client ##{@client.id}" %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0 fw-bold">Client #<%= @client.id %></h1>
+  <%= link_to "Back", clients_path, class: "btn btn-light" %>
+</div>
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Details</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-4">Email</dt><dd class="col-sm-8"><%= @client.email %></dd>
+          <dt class="col-sm-4">Admin</dt><dd class="col-sm-8"><%= @client.admin? ? "Yes" : "No" %></dd>
+          <dt class="col-sm-4">Confirmed</dt><dd class="col-sm-8"><%= friendly_time(@client.confirmed_at) %></dd>
+          <dt class="col-sm-4">2FA</dt><dd class="col-sm-8"><%= @client.otp_required_for_login ? "Enabled" : "Not set" %></dd>
+          <dt class="col-sm-4">Last login</dt><dd class="col-sm-8"><%= friendly_time(@client.last_sign_in_at) %></dd>
+          <dt class="col-sm-4">Sign-in count</dt><dd class="col-sm-8"><%= @client.sign_in_count %></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Toggle Admin</div>
+      <div class="card-body">
+        <%= form_with url: client_path(@client), method: :patch do |f| %>
+          <div class="form-check mb-3">
+            <%= f.check_box :admin, { class: "form-check-input", checked: @client.admin? }, "true", "false" %>
+            <%= f.label :admin, "Admin privileges", class: "form-check-label" %>
+          </div>
+          <%= f.submit "Update", class: "btn btn-primary btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

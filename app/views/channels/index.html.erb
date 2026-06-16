@@ -1,16 +1,31 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Channels" %>
-
-<h1>Channels</h1>
-
-<div id="channels">
-  <% @channels.each do |channel| %>
-    <%= render channel %>
-    <p>
-      <%= link_to "Show this channel", channel %>
-    </p>
-  <% end %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0 fw-bold">Channels</h1>
+  <%= link_to "New Channel", new_channel_path, class: "btn btn-primary" %>
 </div>
-
-<%= link_to "New channel", new_channel_path %>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light"><tr><th>Title</th><th>Method</th><th>Provider</th><th>Projects</th><th></th></tr></thead>
+      <tbody>
+        <% if @channels.empty? %>
+          <tr><td colspan="5" class="text-center text-muted py-5">No channels yet. <%= link_to "Create one", new_channel_path %>.</td></tr>
+        <% else %>
+          <% @channels.each do |c| %>
+            <tr>
+              <td class="fw-semibold"><%= link_to c.title, c %></td>
+              <td><span class="badge bg-<%= c.method == 'email' ? 'primary' : 'success' %>"><%= c.method %></span></td>
+              <td><%= c.provider %></td>
+              <td><%= c.projects.count %></td>
+              <td class="text-end">
+                <%= link_to "Edit",   edit_channel_path(c), class: "btn btn-sm btn-outline-secondary me-1" %>
+                <%= link_to "Delete", c, data: { turbo_method: :delete, turbo_confirm: "Delete #{c.title}?" }, class: "btn btn-sm btn-outline-danger" %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer"><%= paginate @channels %></div>
+</div>

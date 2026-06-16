@@ -1,0 +1,26 @@
+<% content_for :title, "Clients" %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0 fw-bold">Clients <span class="badge bg-secondary fs-6"><%= @clients.total_count rescue @clients.count %></span></h1>
+</div>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light"><tr><th>ID</th><th>Email</th><th>Admin</th><th>Confirmed</th><th>Signed in</th><th></th></tr></thead>
+      <tbody>
+        <% @clients.each do |c| %>
+          <tr>
+            <td class="text-muted">#<%= c.id %></td>
+            <td class="fw-semibold"><%= link_to c.email, client_path(c) %></td>
+            <td><%= c.admin? ? "✓" : "" %></td>
+            <td><%= c.confirmed_at ? "✓" : "Pending" %></td>
+            <td class="text-muted small"><%= friendly_time(c.last_sign_in_at) %></td>
+            <td class="text-end">
+              <%= link_to "View", client_path(c), class: "btn btn-sm btn-outline-secondary" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer"><%= paginate @clients %></div>
+</div>

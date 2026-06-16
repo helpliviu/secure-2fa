@@ -1,27 +1,47 @@
-<%= form_with(model: project) do |form| %>
+<%= form_with model: project, class: "needs-validation" do |f| %>
   <% if project.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
-
-      <ul>
-        <% project.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% project.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :client_id, style: "display: block" %>
-    <%= form.text_field :client_id %>
+  <div class="mb-3">
+    <%= f.label :title, class: "form-label fw-semibold" %>
+    <%= f.text_field :title, class: "form-control", placeholder: "My Website Login" %>
+  </div>
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <%= f.label :channel_id, "Channel", class: "form-label fw-semibold" %>
+      <%= f.collection_select :channel_id, current_client.channels.all, :id, :title,
+            { prompt: "Select a channel…" }, { class: "form-select" } %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :template_id, "Template", class: "form-label fw-semibold" %>
+      <%= f.collection_select :template_id, current_client.templates.all, :id, :title,
+            { prompt: "Select a template…" }, { class: "form-select" } %>
+    </div>
+  </div>
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <%= f.label :expiration_seconds, "OTP Expiry (seconds)", class: "form-label fw-semibold" %>
+      <%= f.number_field :expiration_seconds, class: "form-control", min: 51, value: project.expiration_seconds || 60 %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :max_attempts, "Max Verification Attempts", class: "form-label fw-semibold" %>
+      <%= f.number_field :max_attempts, class: "form-control", min: 1, value: project.max_attempts || 5 %>
+    </div>
+  </div>
+  <div class="mb-4">
+    <%= f.label :webhook_url, "Webhook URL (optional)", class: "form-label fw-semibold" %>
+    <%= f.url_field :webhook_url, class: "form-control", placeholder: "https://yoursite.com/webhooks/2fa" %>
+    <div class="form-text">Receives a POST request after each OTP verification with the result.</div>
   </div>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  <%= f.submit project.new_record? ? "Create Project" : "Update Project",
+        class: "btn btn-primary px-4" %>
+  <%= link_to "Cancel", projects_path, class: "btn btn-light ms-2" %>
 <% end %>

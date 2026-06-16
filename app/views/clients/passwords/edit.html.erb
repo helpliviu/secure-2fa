@@ -1,25 +1,6 @@
-<h2>Change your password</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "clients/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
-
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
+<h2>Set Your Password</h2>
+<%= form_for current_client, url: clients_password_setup_path, method: :patch do |f| %>
+  <div class="mb-3"><%= f.label :password %><%= f.password_field :password, class: "form-control", minlength: 8 %></div>
+  <div class="mb-3"><%= f.label :password_confirmation %><%= f.password_field :password_confirmation, class: "form-control" %></div>
+  <%= f.submit "Set Password", class: "btn btn-primary" %>
 <% end %>
-
-<%= render "clients/shared/links" %>

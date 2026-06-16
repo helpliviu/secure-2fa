@@ -1,29 +1,64 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Secure 2FA - Two Factor Authentication</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= page_title(content_for?(:title) ? yield(:title) : "Dashboard") %></title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+</head>
+<body class="bg-light">
 
-    <%= yield :head %>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background:#0033A0;">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="<%= root_path %>">Secure-2FA</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#appNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="appNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><%= link_to "Dashboard", root_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Projects",  projects_path,  class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Channels",  channels_path,  class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Templates", templates_path, class: "nav-link" %></li>
+        <% if current_client&.admin? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Admin</a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "Clients", clients_path, class: "dropdown-item" %></li>
+            <li><a class="dropdown-item" href="/sidekiq" target="_blank">Sidekiq</a></li>
+          </ul>
+        </li>
+        <% end %>
+      </ul>
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><span class="nav-link text-white-50 small"><%= current_client&.email %></span></li>
+        <li class="nav-item"><%= link_to "Profile",  edit_client_registration_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Sign out", destroy_client_session_path, data: { turbo_method: :delete }, class: "nav-link" %></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+<div class="container mt-3">
+  <% flash.each do |type, message| %>
+    <div class="alert <%= flash_class(type) %> alert-dismissible fade show" role="alert">
+      <%= message %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% end %>
+</div>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+<main class="container my-4">
+  <%= yield %>
+</main>
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "https://cdn.simplecss.org/simple.css" %>
-    <%= javascript_importmap_tags %>
-  </head>
+<footer class="text-center text-muted small py-4 border-top mt-5">
+  &copy; <%= Date.current.year %> Secure-2FA &mdash; Open-source, free forever. &nbsp;|&nbsp;
+  <a href="https://github.com/helpliviu/secure-2fa" target="_blank" class="text-muted">GitHub</a>
+</footer>
 
-  <body>
-    <%= yield %>
-  </body>
+</body>
 </html>

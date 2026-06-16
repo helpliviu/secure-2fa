@@ -1,10 +1,59 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @project.title %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0 fw-bold"><%= @project.title %></h1>
+  <div>
+    <%= link_to "Edit", edit_project_path(@project), class: "btn btn-outline-secondary me-2" %>
+    <%= link_to "Back", projects_path, class: "btn btn-light" %>
+  </div>
+</div>
 
-<%= render @project %>
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-header fw-semibold">API Keys</div>
+      <div class="card-body">
+        <p class="mb-1 small text-muted">Public Key</p>
+        <p class="font-monospace bg-light rounded p-2 small"><%= @project.public_key %></p>
+        <p class="mb-1 small text-muted">Secret Key <span class="text-danger">(keep private)</span></p>
+        <p class="font-monospace bg-light rounded p-2 small"><%= @project.secret_key %></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-header fw-semibold">Configuration</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-5">Channel</dt>
+          <dd class="col-sm-7"><%= @project.channel&.title || "—" %></dd>
+          <dt class="col-sm-5">Template</dt>
+          <dd class="col-sm-7"><%= @project.template&.title || "—" %></dd>
+          <dt class="col-sm-5">OTP Expiry</dt>
+          <dd class="col-sm-7"><%= @project.expiration_seconds %> seconds</dd>
+          <dt class="col-sm-5">Max Attempts</dt>
+          <dd class="col-sm-7"><%= @project.max_attempts %></dd>
+          <dt class="col-sm-5">Webhook URL</dt>
+          <dd class="col-sm-7 font-monospace small"><%= @project.webhook_url.presence || "—" %></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div>
-  <%= link_to "Edit this project", edit_project_path(@project) %> |
-  <%= link_to "Back to projects", projects_path %>
-
-  <%= button_to "Destroy this project", @project, method: :delete %>
+<h4 class="mt-5 mb-3">Recent Logs</h4>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light"><tr><th>Time</th><th>Level</th><th>Message</th></tr></thead>
+      <tbody>
+        <% @project.logs.limit(20).each do |log| %>
+          <tr>
+            <td class="text-muted small"><%= friendly_time(log.created_at) %></td>
+            <td><span class="<%= log_level_badge(log.level) %>"><%= log.level %></span></td>
+            <td><%= log.message %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

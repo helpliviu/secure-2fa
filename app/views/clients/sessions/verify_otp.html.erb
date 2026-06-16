@@ -1,0 +1,10 @@
+<h2>Two-Factor Verification</h2>
+<p>Enter the 6-digit code from your authenticator app, or one of your backup codes.</p>
+<%= form_tag confirm_otp_login_path do %>
+  <div class="mb-3">
+    <label class="form-label">Authentication code</label>
+    <input type="text" name="otp_attempt" class="form-control" autofocus
+           inputmode="numeric" autocomplete="one-time-code" maxlength="6" />
+  </div>
+  <button type="submit" class="btn btn-primary">Verify</button>
+<% end %>

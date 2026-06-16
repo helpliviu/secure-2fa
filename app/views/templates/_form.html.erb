@@ -1,27 +1,49 @@
-<%= form_with(model: template) do |form| %>
+<%= form_with model: template do |f| %>
   <% if template.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(template.errors.count, "error") %> prohibited this template from being saved:</h2>
+    <div class="alert alert-danger">
+      <ul class="mb-0"><% template.errors.full_messages.each do |m| %><li><%= m %></li><% end %></ul>
+    </div>
+  <% end %>
+  <div class="row g-3 mb-4">
+    <div class="col-md-8">
+      <%= f.label :title, class: "form-label fw-semibold" %>
+      <%= f.text_field :title, class: "form-control", placeholder: "OTP Email EN" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :markup, class: "form-label fw-semibold" %>
+      <%= f.select :markup, Template.body_markups.map { |m| [m.upcase, m] }, {}, { class: "form-select" } %>
+    </div>
+  </div>
 
-      <ul>
-        <% template.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+  <h5 class="mb-3">Template Versions</h5>
+  <div class="form-text mb-3">Add one version per language. Body must include <code>{{OTP_CODE}}</code>.</div>
+
+  <%= f.fields_for :template_versions do |vf| %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <%= vf.label :lang, "Language", class: "form-label fw-semibold" %>
+            <%= vf.select :lang, TemplateVersion.languages.map { |l| [l.upcase, l] }, {}, { class: "form-select" } %>
+          </div>
+          <div class="col-md-9">
+            <%= vf.label :subject, class: "form-label fw-semibold" %>
+            <%= vf.text_field :subject, class: "form-control", placeholder: "Your one-time login code" %>
+          </div>
+        </div>
+        <%= vf.label :body, class: "form-label fw-semibold" %>
+        <%= vf.text_area :body, class: "form-control font-monospace", rows: 4,
+              placeholder: "Your verification code is: {{OTP_CODE}}. Valid for 60 seconds." %>
+        <% if vf.object.persisted? %>
+          <div class="form-check mt-2">
+            <%= vf.check_box :_destroy, class: "form-check-input" %>
+            <%= vf.label :_destroy, "Remove this version", class: "form-check-label text-danger" %>
+          </div>
         <% end %>
-      </ul>
+      </div>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :client_id, style: "display: block" %>
-    <%= form.text_field :client_id %>
-  </div>
-
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  <%= f.submit template.new_record? ? "Create Template" : "Update Template", class: "btn btn-primary px-4" %>
+  <%= link_to "Cancel", templates_path, class: "btn btn-light ms-2" %>
 <% end %>

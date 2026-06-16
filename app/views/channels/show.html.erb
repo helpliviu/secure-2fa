@@ -1,10 +1,22 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @channel %>
-
-<div>
-  <%= link_to "Edit this channel", edit_channel_path(@channel) %> |
-  <%= link_to "Back to channels", channels_path %>
-
-  <%= button_to "Destroy this channel", @channel, method: :delete %>
+<% content_for :title, @channel.title %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0 fw-bold"><%= @channel.title %></h1>
+  <div>
+    <%= link_to "Edit", edit_channel_path(@channel), class: "btn btn-outline-secondary me-2" %>
+    <%= link_to "Back", channels_path, class: "btn btn-light" %>
+  </div>
+</div>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <dl class="row">
+      <dt class="col-sm-3">Method</dt>
+      <dd class="col-sm-9"><%= @channel.method %></dd>
+      <dt class="col-sm-3">Provider</dt>
+      <dd class="col-sm-9"><%= @channel.provider %></dd>
+      <dt class="col-sm-3">Credentials</dt>
+      <dd class="col-sm-9"><em class="text-muted">Encrypted — not shown for security.</em></dd>
+      <dt class="col-sm-3">Used by projects</dt>
+      <dd class="col-sm-9"><%= @channel.projects.map(&:title).join(", ").presence || "None" %></dd>
+    </dl>
+  </div>
 </div>

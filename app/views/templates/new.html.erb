@@ -1,11 +1,3 @@
-<% content_for :title, "New template" %>
-
-<h1>New template</h1>
-
-<%= render "form", template: @template %>
-
-<br>
-
-<div>
-  <%= link_to "Back to templates", templates_path %>
-</div>
+<% content_for :title, "New Template" %>
+<h1 class="h3 fw-bold mb-4">New Template</h1>
+<div class="card shadow-sm"><div class="card-body"><%= render "form", template: @template %></div></div>

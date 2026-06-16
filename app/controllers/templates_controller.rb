@@ -1,71 +1,56 @@
 class TemplatesController < ApplicationController
   before_action :authenticate_client!
-  before_action :set_template, only: %i[ show edit update destroy ]
+  before_action :set_template, only: %i[show edit update destroy]
 
-  # GET /templates or /templates.json
   def index
-    @templates = current_client.templates.all
+    @templates = current_client.templates.all.page(params[:page])
   end
 
-  # GET /templates/1 or /templates/1.json
-  def show
-  end
+  def show; end
 
-  # GET /templates/new
   def new
     @template = current_client.templates.new
+    @template.template_versions.build
   end
 
-  # GET /templates/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /templates or /templates.json
   def create
     @template = current_client.templates.new(template_params)
 
-    respond_to do |format|
-      if @current_client.templates.save
-        format.html { redirect_to @template, notice: "Template was successfully created." }
-        format.json { render :show, status: :created, location: @template }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @current_client.templates.errors, status: :unprocessable_entity }
-      end
+    if @template.save
+      redirect_to @template, notice: "Template created successfully."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /templates/1 or /templates/1.json
   def update
-    respond_to do |format|
-      if @current_client.templates.update(template_params)
-        format.html { redirect_to @template, notice: "Template was successfully updated." }
-        format.json { render :show, status: :ok, location: @template }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @current_client.templates.errors, status: :unprocessable_entity }
-      end
+    if @template.update(template_params)
+      redirect_to @template, notice: "Template updated successfully."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /templates/1 or /templates/1.json
   def destroy
-    @current_client.templates.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to templates_path, status: :see_other, notice: "Template was successfully destroyed." }
-      format.json { head :no_content }
+    if @template.destroy
+      redirect_to templates_path, notice: "Template deleted."
+    else
+      redirect_to @template, alert: @template.errors.full_messages.to_sentence
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_template
-      @template = current_client.templates.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def template_params
-      params.expect(template: [ :client_id, :title ])
-    end
+  def set_template
+    @template = current_client.templates.find(params[:id])
+  end
+
+  def template_params
+    params.require(:template).permit(
+      :title, :markup,
+      template_versions_attributes: [:id, :subject, :body, :lang, :_destroy]
+    )
+  end
 end

@@ -1,10 +1,29 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @template %>
-
-<div>
-  <%= link_to "Edit this template", edit_template_path(@template) %> |
-  <%= link_to "Back to templates", templates_path %>
-
-  <%= button_to "Destroy this template", @template, method: :delete %>
+<% content_for :title, @template.title %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0 fw-bold"><%= @template.title %></h1>
+  <div>
+    <%= link_to "Edit", edit_template_path(@template), class: "btn btn-outline-secondary me-2" %>
+    <%= link_to "Back", templates_path, class: "btn btn-light" %>
+  </div>
+</div>
+<h5 class="mb-3">Versions <span class="badge bg-secondary"><%= @template.template_versions.count %></span></h5>
+<div class="row g-3">
+  <% @template.template_versions.each do |v| %>
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header d-flex justify-content-between">
+          <strong><%= v.lang.upcase %></strong>
+          <span class="badge bg-secondary"><%= @template.markup.upcase %></span>
+        </div>
+        <div class="card-body">
+          <% if @template.markup == "html" %>
+            <p class="small text-muted mb-1">Subject</p>
+            <p class="mb-3"><%= v.subject %></p>
+          <% end %>
+          <p class="small text-muted mb-1">Body</p>
+          <pre class="bg-light rounded p-2 small mb-0"><%= v.body %></pre>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

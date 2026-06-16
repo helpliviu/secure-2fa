@@ -1,0 +1,13 @@
+<h2>Set Up Two-Factor Authentication</h2>
+<p>Scan the QR code below with Google Authenticator or Twilio Authy, then enter the 6-digit code to confirm.</p>
+<% if @qr_code %>
+  <img src="<%= @qr_code %>" alt="QR Code" class="mb-3 d-block" />
+<% end %>
+<%= form_tag verify_2fa_path do %>
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Verification Code</label>
+    <input type="text" name="otp_attempt" class="form-control" style="max-width:200px"
+           inputmode="numeric" autocomplete="one-time-code" maxlength="6" autofocus />
+  </div>
+  <button type="submit" class="btn btn-primary">Enable 2FA</button>
+<% end %>

@@ -1,16 +1,31 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Templates" %>
-
-<h1>Templates</h1>
-
-<div id="templates">
-  <% @templates.each do |template| %>
-    <%= render template %>
-    <p>
-      <%= link_to "Show this template", template %>
-    </p>
-  <% end %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0 fw-bold">Templates</h1>
+  <%= link_to "New Template", new_template_path, class: "btn btn-primary" %>
 </div>
-
-<%= link_to "New template", new_template_path %>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light"><tr><th>Title</th><th>Markup</th><th>Languages</th><th>Projects</th><th></th></tr></thead>
+      <tbody>
+        <% if @templates.empty? %>
+          <tr><td colspan="5" class="text-center text-muted py-5">No templates yet. <%= link_to "Create one", new_template_path %>.</td></tr>
+        <% else %>
+          <% @templates.each do |t| %>
+            <tr>
+              <td class="fw-semibold"><%= link_to t.title, t %></td>
+              <td><span class="badge bg-secondary"><%= t.markup.upcase %></span></td>
+              <td><%= t.template_versions.map(&:lang).map(&:upcase).join(", ") %></td>
+              <td><%= t.projects.count %></td>
+              <td class="text-end">
+                <%= link_to "Edit",   edit_template_path(t), class: "btn btn-sm btn-outline-secondary me-1" %>
+                <%= link_to "Delete", t, data: { turbo_method: :delete, turbo_confirm: "Delete #{t.title}?" }, class: "btn btn-sm btn-outline-danger" %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer"><%= paginate @templates %></div>
+</div>

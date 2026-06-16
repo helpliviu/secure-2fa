@@ -1,12 +1,3 @@
-<% content_for :title, "Editing channel" %>
-
-<h1>Editing channel</h1>
-
-<%= render "form", channel: @channel %>
-
-<br>
-
-<div>
-  <%= link_to "Show this channel", @channel %> |
-  <%= link_to "Back to channels", channels_path %>
-</div>
+<% content_for :title, "Edit Channel" %>
+<h1 class="h3 fw-bold mb-4">Edit: <%= @channel.title %></h1>
+<div class="card shadow-sm"><div class="card-body"><%= render "form", channel: @channel %></div></div>
